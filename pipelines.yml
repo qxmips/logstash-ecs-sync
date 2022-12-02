@@ -1,0 +1,2 @@
+- pipeline.id: redis
+  path.config: "/git/repo/pipeline/logstash.conf"
