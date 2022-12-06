@@ -4,7 +4,7 @@ http.host: "0.0.0.0"
 #
 # Where to fetch the pipeline configuration for the main pipeline
 #
-path.config: /git/repo/*.conf
+# path.config: /git/repo/*.conf
 #
 # Pipeline configuration string for the main pipeline
 #
