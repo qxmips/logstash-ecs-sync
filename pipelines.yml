@@ -1,2 +1,2 @@
 - pipeline.id: redis
-  path.config: "/git/repo/pipeline/logstash.conf"
+  path.config: "/usr/share/logstash/lookingglass/config/pipelines/logstash.conf"
