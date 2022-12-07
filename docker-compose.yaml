@@ -1,0 +1,45 @@
+# https://github.com/kubernetes/git-sync
+version: '3'
+services:
+  logstash:
+    image: opensearchproject/logstash-oss-with-opensearch-output-plugin:7.16.3
+    command: logstash --path.settings /usr/share/logstash/lookingglass/config
+    container_name: logstash
+    ports:
+      - 9600:9600
+    volumes:
+      - git:/usr/share/logstash/lookingglass
+    depends_on:
+      - git-sync
+      - redis
+    links:
+      - git-sync
+      - redis
+    networks:
+      - opensearch-net
+  git-sync:
+    image: k8s.gcr.io/git-sync/git-sync:v3.6.2
+    environment:
+      GIT_SYNC_REPO: "https://github.com/qxmips/logstash-ecs-sync"
+      GIT_SYNC_BRANCH: "main"
+      #GIT_SYNC_LINK: "/config"
+      GIT_SYNC_DEST: "config"
+    networks:
+      - opensearch-net
+    volumes:
+      - git:/tmp/git
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass CfJ6Qvykf7
+      # volumes:
+      #- cache:/data
+    networks:
+      - opensearch-net
+volumes:
+  git:
+    driver: local
+networks:
+  opensearch-net:
